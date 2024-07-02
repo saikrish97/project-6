@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image using the Dockerfile in the repository
-                    sh 'docker build -t saikrishnaramanujam/myfirstpython:latest .'
+                    sh 'docker build -t saikrishnaramanujam/my-python-app:latest .'
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline {
                     }
         
                     // Push the Docker image to Docker Hub
-                    sh 'docker push saikrishnaramanujam/myfirstpython:latest'
+                    sh 'docker push saikrishnaramanujam/my-python-app:latest'
                    // sh 'docker push umair1999/:1.0'
 
                 }
