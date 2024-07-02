@@ -1,25 +1,44 @@
 pipeline {
-    agent any 
+    agent any
+
     stages {
-        stage("clone") {
-          steps {  
-            echo "this is a changed message"
-          }
-        }
-        stage("build") {
-                  steps {
-                    echo "this is  a build stage"
-                  }
+        stage('Clone from Git') {
+            steps {
+                script {
+                    // Clean workspace before cloning
+                    deleteDir()
+
+                    // Clone the repository
+                    checkout scm
                 }
-                stage("deploy") {
-                          steps {
-                            echo "this is a deploy stage "
-                          }
-                        }
-        stage("scan") {
-                          steps {
-                            echo "this is a scan stage "
-                          }
-                        }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build Docker image using the Dockerfile in the repository
+                    sh 'docker build -t saikrishnaramanujam/myfirstpython:latest .'
+                }
+            }
+        }
+
+       
+
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    // Log in to Docker Hub
+                    withCredentials([usernamePassword(credentialsId: 'docker-ID', usernameVariable: 'saikrishnaramanujam', passwordVariable: 'Hi5@world')]) {
+                        sh 'docker login -u saikrishnaramanujam -p Hi5@world'
+                    }
+        
+                    // Push the Docker image to Docker Hub
+                    sh 'docker push saikrishnaramanujam/myfirstpython:latest'
+                   // sh 'docker push umair1999/:1.0'
+
+                }
+            }
+        }
     }
 }
